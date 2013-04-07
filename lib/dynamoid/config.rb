@@ -8,7 +8,10 @@ module Dynamoid
   module Config
     extend self
     extend Options
-    include ActiveModel::Observing
+    # https://github.com/mongoid/mongoid/issues/2597
+    # https://github.com/rails/rails/commit/ec17f0d3521876a5b8c14afa0bd9154c6d194c16
+    # https://github.com/rails/rails-observers
+    #include ActiveModel::Observing
 
     # All the default options.
     option :adapter, :default => 'aws-sdk'

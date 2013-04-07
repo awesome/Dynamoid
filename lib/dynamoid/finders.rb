@@ -31,21 +31,19 @@ module Dynamoid
         end
       end
 
-      # Return objects found by the given array of ids, either hash keys, or hash/range key combinations using BatchGet.
-      # Returns empty array if no results found.
+      # Find all object by hash key or hash and range key
       #
       # @param [Array<ID>] ids
-      # @param [Hash] options: Passed to the underlying query.
       #
       # @example
       #   find all the user with hash key
       #   User.find_all(['1', '2', '3'])
       #
-      #   find all the tweets using hash key and range key with consistent read
-      #   Tweet.find_all([['1', 'red'], ['1', 'green']], :consistent_read => true)
-      def find_all(ids, options = {})
+      #   find all the tweets using hash key and range key
+      #   Tweet.find_all([['1', 'red'], ['1', 'green'])
+      def find_all(ids)
         items = Dynamoid::Adapter.read(self.table_name, ids, options)
-        items ? items[self.table_name].map{|i| from_database(i)} : []
+        items[self.table_name].collect{|i| from_database(i) }
       end
 
       # Find one object directly by id.
